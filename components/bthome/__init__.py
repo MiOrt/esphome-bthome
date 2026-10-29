@@ -360,7 +360,7 @@ async def to_code(config):
             # ESPHome < 2026.10.0 fetches every project
             pass
         else:
-            include_west_project("cmsis-dsp")
+            include_west_project("tinycrypt")
 
         # Enable Bluetooth
         zephyr_add_prj_conf("BT", True)
