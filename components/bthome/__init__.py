@@ -281,6 +281,14 @@ async def to_code(config):
     cg.add(var.set_retransmit_count(config[CONF_RETRANSMIT_COUNT]))
     cg.add(var.set_retransmit_interval(config[CONF_RETRANSMIT_INTERVAL]))
 
+    try:
+        from esphome.components.nrf52.framework import include_west_project
+    except ImportError:
+        # ESPHome < 2026.10.0 fetches every project
+        pass
+    else:
+        include_west_project("tinycrypt")
+
     # Always use ESPHome device name
     if CORE.name:
         cg.add(var.set_device_name(CORE.name[:20]))
@@ -353,14 +361,6 @@ async def to_code(config):
 
     elif CORE.is_nrf52:
         from esphome.components.zephyr import zephyr_add_prj_conf
-
-        try:
-            from esphome.components.nrf52.framework import include_west_project
-        except ImportError:
-            # ESPHome < 2026.10.0 fetches every project
-            pass
-        else:
-            include_west_project("tinycrypt")
 
         # Enable Bluetooth
         zephyr_add_prj_conf("BT", True)
