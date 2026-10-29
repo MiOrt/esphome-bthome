@@ -12,10 +12,7 @@ Supports ESP32 (ESP-IDF) and nRF52 (Zephyr) platforms.
 
 import esphome.codegen as cg
 from esphome.components import binary_sensor, sensor
-try:
-    from esphome.components.nrf52.framework import include_west_project
-except ImportError:
-    include_west_project = None
+from esphome.components.nrf52.framework import include_west_project
 import esphome.config_validation as cv
 from esphome.const import (
     CONF_BINARY_SENSORS,
@@ -357,9 +354,13 @@ async def to_code(config):
     elif CORE.is_nrf52:
         from esphome.components.zephyr import zephyr_add_prj_conf
 
-        # ESPHome 2026.10.0+: TinyCrypt SDK project is fetched on demand
-        if include_west_project is not None:
-            include_west_project("tinycrypt")
+        try:
+            from esphome.components.nrf52.framework import include_west_project
+        except ImportError:
+            # ESPHome < 2026.10.0 fetches every project
+            pass
+        else:
+            include_west_project("cmsis-dsp")
 
         # Enable Bluetooth
         zephyr_add_prj_conf("BT", True)
