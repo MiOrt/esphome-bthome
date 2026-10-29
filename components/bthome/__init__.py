@@ -12,7 +12,6 @@ Supports ESP32 (ESP-IDF) and nRF52 (Zephyr) platforms.
 
 import esphome.codegen as cg
 from esphome.components import binary_sensor, sensor
-from esphome.components.nrf52.framework import include_west_project
 import esphome.config_validation as cv
 from esphome.const import (
     CONF_BINARY_SENSORS,
